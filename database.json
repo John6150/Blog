@@ -1,0 +1,26 @@
+{
+  "Users": [
+    {
+      "id": "349f",
+      "FirstName": "John",
+      "LastName": "Olaleke",
+      "Email": "olalekejohnny@gmail.com",
+      "Password": "123"
+    },
+    {
+      "id": "42e3",
+      "FirstName": "Steve",
+      "LastName": "Olaleke",
+      "Email": "steveolalek@gmail.com",
+      "Password": "234"
+    },
+    {
+      "id": "d7cf",
+      "FirstName": "Ruth",
+      "LastName": "Olaleke",
+      "Email": "toluruthie@gmail.com",
+      "Password": "1234"
+    }
+  ],
+  "Blogs": []
+}
