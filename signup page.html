@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <style>body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    
+    .signup-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+    }
+    
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    button:hover {
+        background-color: #2980b9;
+    }
+    
+    </style>
+</head>
+
+<body>
+    <input type="text" name="" id="firstname" placeholder="firstname">
+    <input type="text" name="" id="lastname" placeholder="lastname">
+    <input type="text" name="" id="email" placeholder="email">
+    <input type="password" name="" id="password" placeholder="password">
+    <input type="password" name="" id="confirm_password" placeholder="confirm password">
+    <button onclick="reg_ister()">register</button>
+</body>
+
+</html>
+<script>
+    let firstname = document.querySelector('#firstname');
+    let lastname = document.querySelector("#lastname");
+    let email = document.querySelector("#email");
+    let password = document.querySelector("#password");
+    let confirm_password = document.querySelector("#confirm_password");
+    function reg_ister() {
+
+        let signup_info = {
+            Firstname: firstname.value,
+            Lastname: lastname.value,
+            Email: email.value,
+            Password: password.value,
+            ConfirmPassword: confirm_password.value
+        }
+        fetch(`http://localhost:1244/user`).then((result) => result.json()).then((data) => {
+            console.log(data)
+            let exisiting = data.find((el) => el.Email === email.value || el.Password == password.value);
+            console.log(exisiting)
+            if (exisiting) {
+                 alert('user exist')
+            }else{
+                
+        fetch(`http://localhost:1244/user`, {
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(signup_info)
+        }).then((result) => result.json()).then((data) => {
+            console.log(data)
+        })
+        window.location.href='login.html'
+            }
+
+        })
+    }
+
+</script>
+<!-- npx json-server --watch fad.json --port 1234 -->

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+.blog-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+#display {
+    margin-top: 20px;
+}
+
+#inner {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+}
+
+#im {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+    </style>
+</head>
+
+<body>
+    <h1>hello <span id="disp"></span> welome to ur bolgspace_app </h1>
+    <div class="div">
+        <input type="text" name="" id="na_me">
+        <input type="file" onchange="activate()" name="" id="fileInput">
+        <img src="" alt="" id="img">
+        <textarea name="" id="note" cols="20" rows="2" placeholder="write a comment"></textarea>
+    </div>
+    <button onclick="post()">Post</button>
+    <div id="display">
+
+    </div>
+    <button onclick="log_out()">logout</button>
+</body>
+
+</html>
+<script>
+    fetch(`http://localhost:1244/user`).then((res) => res.json()).then((data) => {
+        console.log(data)
+        let validated = JSON.parse(localStorage.getItem("validated_user")) || false
+        console.log(validated)
+        if (validated) {
+            document.getElementById('disp').innerHTML = ` ${validated.Lastname}`
+        } else {
+            alert('unknown user cant be here abeg go login')
+            window.location.href = 'login.html'
+        }
+    })
+    function log_out() {
+        alert('logged out successfully')
+        localStorage.removeItem('validated_user')
+        window.location.href = 'login.html'
+    }
+
+    let array = []
+    let na_me = document.getElementById('na_me')
+    let note = document.getElementById('note')
+    let img = document.getElementById('img')
+    let display = document.getElementById('display')
+    function post() {
+        let obj = {
+            Author: na_me.value,
+            Image: img.src,
+            coment: note.value
+        }
+        array.push({ obj })
+        console.log(array)
+        display.innerHTML = ''
+        array.forEach(({ obj }, i) => {
+            display.innerHTML +=
+                `
+        <div  id="inner">
+           <h3>Author:${obj.Author}</h3>
+           <br>
+           <div id="innerr"><img id="im" src="${obj.Image}" alt="${obj.Author}"></div>
+            <br>
+            <br>
+            <br>
+           <p>Comment : ${obj.coment}</p>
+        </div>
+        `
+
+        });
+            fetch(`http://localhost:1244/post`,{
+                headers:{
+                    'content-type':'application/json'
+                },
+                method:'POST',
+                body:JSON.stringify(obj),
+            }
+            ).then((res)=>res.json()).then((post)=>{
+                console.log(post)
+            })
+    }
+
+    function activate() {
+        let filemi_onchange = document.getElementById('fileInput');
+        let imgtag = document.getElementById("img");
+        console.log(filemi_onchange.files);//to get the obj
+        let fileReader = new FileReader(); //creating a filereader object
+        console.log(fileReader);
+        fileReader.addEventListener('load', (el) => {
+            let result = el.target.result;
+            imgtag.src = result;
+        })
+        if (filemi_onchange) {
+            fileReader.readAsDataURL(filemi_onchange.files[0]);
+        }
+        fetch.get
+    }
+</script>
